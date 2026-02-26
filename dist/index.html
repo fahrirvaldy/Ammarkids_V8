@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ammarkids 2026 Enterprise Command Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script type="module" crossorigin src="/assets/index-DRJEmZk1.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-B-NLff9e.css">
+</head>
+<body class="bg-google-gray text-google-text font-sans overflow-hidden antialiased">
+
+    <div id="app" class="flex h-screen w-full relative">
+        <div id="sidebar-overlay" class="fixed inset-0 bg-gray-900/50 z-30 hidden md:hidden backdrop-blur-sm"></div>
+
+        <!-- SIDEBAR -->
+        <aside id="sidebar" class="fixed inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-300 ease-in-out z-40 w-64 bg-white border-r border-gray-200 flex flex-col shadow-2xl md:shadow-none h-full">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-google-blue rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-sm">A</div>
+                    <h1 class="text-xl font-bold tracking-tight text-gray-800 leading-tight">Ammarkids<span class="text-google-blue text-[10px] block font-semibold uppercase tracking-wider">Enterprise</span></h1>
+                </div>
+                <button id="sidebar-close" class="md:hidden text-gray-400 hover:text-gray-600"><i class="fas fa-times text-xl"></i></button>
+            </div>
+
+            <nav class="flex-1 overflow-y-auto p-4 space-y-1">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 mt-2 px-2">Modul Finansial</p>
+                <button data-view="dashboard" class="nav-btn w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-lg bg-blue-50 text-google-blue transition-colors"><i class="fas fa-chart-pie w-5 text-center"></i> Profit Histori</button>
+                <button data-view="simulator" class="nav-btn w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"><i class="fas fa-sliders-h w-5 text-center"></i> Simulator Elastisitas</button>
+                <button data-view="customsim" class="nav-btn w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"><i class="fas fa-magic w-5 text-center"></i> Simulasi Bebas (Baru)</button>
+
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 mt-6 px-2">Modul Operasional</p>
+                <button data-view="inventory" class="nav-btn w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"><i class="fas fa-boxes w-5 text-center"></i> 4 Kuadran Stok</button>
+                <button data-view="runway" class="nav-btn w-full flex items-center gap-3 px-4 py-2.5 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"><i class="fas fa-hourglass-half w-5 text-center"></i> Ketahanan Stok (Baru)</button>
+            </nav>
+
+            <div class="p-4 border-t border-gray-100 bg-gray-50">
+                <button onclick="openDataIntegration()" class="w-full bg-white border border-gray-300 text-gray-700 py-2 rounded-lg text-sm font-bold shadow-sm hover:bg-gray-50 transition flex items-center justify-center gap-2">
+                    <i class="fas fa-database text-google-green"></i> Kelola Data CSV
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main class="flex-1 flex flex-col h-full min-w-0 bg-google-gray">
+            
+            <header class="bg-white border-b border-gray-200 p-4 flex md:hidden justify-between items-center z-20 shadow-sm sticky top-0">
+                <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 bg-google-blue rounded text-white flex items-center justify-center font-bold text-xs">A</div>
+                    <div class="font-bold text-base text-gray-800 tracking-tight">Ammarkids HQ</div>
+                </div>
+                <button id="sidebar-toggle" class="text-gray-600 hover:text-google-blue bg-gray-50 p-2 rounded-lg"><i class="fas fa-bars text-lg"></i></button>
+            </header>
+
+            <div id="content-area" class="flex-1 overflow-y-auto w-full">
+                
+                <div class="bg-white border-b border-gray-200 p-4 md:px-8 md:py-5 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 z-10 sticky top-0 md:static">
+                    <div class="flex flex-col">
+                        <h2 class="text-xl md:text-2xl font-bold text-gray-800" id="header-title">Executive Board</h2>
+                        <p class="text-xs md:text-sm text-gray-500">Analisis presisi: Tiktok dan Tokopedia menggunakan struktur biaya yang sama.</p>
+                    </div>
+
+                    <div class="flex flex-row flex-wrap gap-2 md:gap-3 items-center w-full lg:w-auto">
+                        <select id="filter-channel" class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-google-blue outline-none transition font-medium cursor-pointer shadow-sm">
+                            <option value="all">💳 Semua Channel</option>
+                            <option value="SHOPEE">🟠 Shopee Only</option>
+                            <option value="TIKTOK_TOKOPEDIA">⚫ Tiktok & 🟢 Tokopedia</option>
+                        </select>
+                        
+                        <select id="filter-period" class="bg-gray-50 border border-gray-200 text-gray-700 text-sm rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-google-blue outline-none transition font-medium cursor-pointer shadow-sm">
+                            <option value="all">📅 Semua Waktu</option>
+                            <option value="7">📅 7 Hari Terakhir</option>
+                            <option value="14">📅 14 Hari Terakhir</option>
+                            <option value="custom">📅 Pilih Tanggal...</option>
+                        </select>
+
+                        <div id="custom-date-container" class="hidden items-center gap-2 bg-white border border-gray-300 rounded-lg px-3 py-1.5 shadow-sm">
+                            <input type="date" id="start-date" class="text-xs font-bold text-gray-700 outline-none bg-transparent cursor-pointer">
+                            <span class="text-gray-400 text-xs font-bold">-</span>
+                            <input type="date" id="end-date" class="text-xs font-bold text-gray-700 outline-none bg-transparent cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-4 md:p-8 w-full max-w-[1600px] mx-auto">
+                    
+                    <!-- ================= VIEW 1: DASHBOARD HISTORI ================= -->
+                    <div id="view-dashboard" class="animate-fade-in space-y-6">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+                            <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 card-shadow relative overflow-hidden">
+                                <p class="text-xs md:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">Omzet Sukses</p>
+                                <h3 class="text-2xl md:text-3xl font-bold text-google-blue tracking-tight" id="kpi-revenue">Rp 0</h3>
+                                <p class="mt-2 text-[10px] text-gray-400">Total Kotor - Est. RTS</p>
+                            </div>
+                            <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 card-shadow relative overflow-hidden">
+                                <p class="text-xs md:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">Profit Kontribusi</p>
+                                <h3 class="text-2xl md:text-3xl font-bold text-google-green tracking-tight" id="kpi-profit">Rp 0</h3>
+                                <p class="mt-2 text-[10px] font-bold text-green-700 bg-green-50 inline-block px-2 py-0.5 rounded border border-green-100">Margin: <span id="kpi-margin-pct">0%</span></p>
+                            </div>
+                            <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 card-shadow relative overflow-hidden">
+                                <p class="text-xs md:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">Proyeksi Cair</p>
+                                <h3 class="text-2xl md:text-3xl font-bold text-yellow-500 tracking-tight" id="kpi-settlement">Rp 0</h3>
+                                <p class="mt-2 text-[10px] text-gray-400">Memperhitungkan jeda Bank</p>
+                            </div>
+                            <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-100 card-shadow relative overflow-hidden">
+                                <p class="text-xs md:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">Resiko Retur (Lost)</p>
+                                <h3 class="text-2xl md:text-3xl font-bold text-google-red tracking-tight" id="kpi-loss">Rp 0</h3>
+                                <p class="mt-2 text-[10px] font-bold text-red-700 bg-red-50 inline-block px-2 py-0.5 rounded border border-red-100"><span id="kpi-rts-count">0</span> Pcs Gagal</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="bg-white p-4 md:p-6 rounded-2xl border border-gray-100 card-shadow">
+                                <h3 class="font-bold text-gray-800 text-lg mb-4">Timeline Cashflow Pencairan</h3>
+                                <div class="chart-wrapper h-64 md:h-80"><canvas id="chart-cashflow"></canvas></div>
+                            </div>
+                            <div class="bg-white p-4 md:p-6 rounded-2xl border border-gray-100 card-shadow">
+                                <h3 class="font-bold text-gray-800 text-lg mb-4">Distribusi Biaya Harian</h3>
+                                <div class="chart-wrapper h-64 md:h-80"><canvas id="chart-costs"></canvas></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border border-gray-100 card-shadow overflow-hidden">
+                            <div class="p-4 md:p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gray-50/50">
+                                <div>
+                                    <h3 class="font-bold text-gray-800 text-lg">Performa Kategori & Setup Harga Dasar</h3>
+                                    <p class="text-xs text-gray-500">Harga dasar otomatis mendeteksi kategori. Tekan Enter untuk mengkalkulasi ulang manual.</p>
+                                </div>
+                                <div class="relative w-full md:w-64">
+                                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                                    <input type="text" id="sales-search" placeholder="Cari Produk..." class="pl-10 text-sm border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-google-blue bg-white shadow-sm">
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto w-full max-h-[500px] overflow-y-auto relative">
+                                <table class="w-full text-sm text-left whitespace-nowrap">
+                                    <thead class="bg-gray-100 text-gray-600 font-bold uppercase text-[11px] tracking-wider sticky top-0 z-10 shadow-sm">
+                                        <tr>
+                                            <th class="px-6 py-4">Kategori Master & Channel</th>
+                                            <th class="px-6 py-4 text-center">Qty Sukses</th>
+                                            <th class="px-6 py-4 text-right">Harga Jual Dasar (HJP)</th>
+                                            <th class="px-6 py-4 text-right">Est. Profit Murni</th>
+                                            <th class="px-6 py-4 text-center">Margin</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="product-table-body" class="divide-y divide-gray-100"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= VIEW 2: SIMULATOR ELASTISITAS ================= -->
+                    <div id="view-simulator" class="hidden animate-fade-in space-y-6">
+                        <div class="bg-gradient-to-r from-purple-50 to-white border border-purple-200 p-5 md:p-6 rounded-2xl flex gap-4 items-start shadow-sm relative overflow-hidden">
+                            <div class="absolute right-0 top-0 w-48 h-48 bg-purple-100 rounded-bl-full -mr-10 -mt-10 opacity-40"></div>
+                            <i class="fas fa-exchange-alt text-purple-600 mt-1 text-3xl relative z-10"></i>
+                            <div class="relative z-10">
+                                <h4 class="text-base font-bold text-purple-900 mb-1">Simulator Elastisitas Harga (Berdasarkan Forecast)</h4>
+                                <p class="text-sm text-purple-800 leading-relaxed">Uji coba kenaikan harga. Sistem membaca target Qty dari file <i>Kebutuhan_Stok.csv</i>. Gunakan menu <b>Simulasi Bebas</b> jika Anda ingin mengubah target Qty secara manual.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                            <div class="lg:col-span-5 space-y-4 max-h-[800px] overflow-y-auto pr-2 pb-4" id="dynamic-sim-sliders"></div>
+                            <div class="lg:col-span-7">
+                                <div class="bg-white p-5 md:p-8 rounded-2xl border border-gray-100 card-shadow h-full flex flex-col sticky top-24">
+                                    <div class="bg-gray-50 p-5 rounded-xl mb-6 border border-gray-200">
+                                        <h4 class="text-sm font-bold text-gray-700 uppercase mb-4 tracking-wider"><i class="fas fa-cog"></i> Parameter Efisiensi Global</h4>
+                                        <div class="grid grid-cols-2 gap-8">
+                                            <div>
+                                                <label class="flex justify-between items-center text-xs font-bold text-gray-600 mb-2">Budget Ads <span id="val-sim-ads" class="text-google-blue bg-blue-50 px-2 py-0.5 rounded ml-1 text-sm border border-blue-100">12.5%</span></label>
+                                                <input type="range" min="0" max="30" step="0.5" value="12.5" id="sim-ads" class="w-full accent-google-blue">
+                                            </div>
+                                            <div>
+                                                <label class="flex justify-between items-center text-xs font-bold text-gray-600 mb-2">Efisiensi Retur (RTS) <span id="val-sim-rts" class="text-google-blue bg-blue-50 px-2 py-0.5 rounded ml-1 text-sm border border-blue-100">0%</span></label>
+                                                <input type="range" min="-10" max="10" step="1" value="0" id="sim-rts" class="w-full accent-google-blue">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center mb-6">
+                                        <h3 class="text-lg font-bold text-gray-800">Proyeksi Laba Kontribusi Bulan Depan</h3>
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-4 text-center mb-6">
+                                        <div class="bg-white border border-gray-200 p-5 rounded-2xl">
+                                            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Profit Jika Harga Tetap</p>
+                                            <h2 class="text-2xl md:text-3xl font-black text-gray-700" id="sim-base-profit">Rp 0</h2>
+                                        </div>
+                                        <div class="bg-blue-50 border border-blue-200 p-5 rounded-2xl relative shadow-inner">
+                                            <p class="text-[10px] font-bold text-google-blue uppercase tracking-widest mb-2">Profit Simulasi HJP Baru</p>
+                                            <h2 class="text-2xl md:text-3xl font-black text-google-blue" id="sim-new-profit">Rp 0</h2>
+                                            <div id="sim-delta" class="absolute -bottom-4 left-1/2 transform -translate-x-1/2 px-5 py-1.5 rounded-full text-sm font-black shadow-lg border-2 border-white transition-all whitespace-nowrap bg-green-100 text-green-700">+ Rp 0 Profit Extra</div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="flex justify-between items-center mt-2 mb-2">
+                                        <span class="text-xs text-gray-500 font-bold">Visualisasi Pertumbuhan</span>
+                                        <button onclick="resetFutureSimulation()" class="text-xs text-gray-500 hover:text-google-red font-bold underline"><i class="fas fa-undo"></i> Reset Semua Simulasi</button>
+                                    </div>
+                                    <div class="chart-wrapper flex-grow min-h-[200px]"><canvas id="chart-simulation"></canvas></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= VIEW 3: SIMULASI BEBAS ================= -->
+                    <div id="view-customsim" class="hidden animate-fade-in space-y-6">
+                        <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 rounded-r-lg flex gap-4 items-center shadow-sm">
+                            <i class="fas fa-magic text-indigo-500 text-3xl"></i>
+                            <div>
+                                <h3 class="font-bold text-indigo-900 text-lg">Kanvas Simulasi Masa Depan</h3>
+                                <p class="text-sm text-indigo-800">Anda memegang kendali penuh. Ubah target penjualan (Qty), HJP, dan HPP sesuka Anda.</p>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-gray-800 p-6 rounded-2xl shadow-lg relative overflow-hidden border border-gray-700">
+                                <p class="text-gray-400 font-bold uppercase tracking-widest text-xs mb-2 relative z-10">Proyeksi Total Omzet</p>
+                                <h2 class="text-3xl md:text-4xl font-black text-white relative z-10 truncate" id="sandbox-omzet">Rp 0</h2>
+                            </div>
+                            <div class="bg-gradient-to-br from-google-green to-green-700 p-6 rounded-2xl shadow-lg relative overflow-hidden">
+                                <p class="text-green-100 font-bold uppercase tracking-widest text-xs mb-2 relative z-10">Proyeksi Profit Murni</p>
+                                <h2 class="text-3xl md:text-4xl font-black text-white relative z-10 truncate" id="sandbox-profit">Rp 0</h2>
+                            </div>
+                            <div class="bg-gradient-to-br from-yellow-400 to-yellow-600 p-6 rounded-2xl shadow-lg relative overflow-hidden">
+                                <p class="text-yellow-100 font-bold uppercase tracking-widest text-xs mb-2 relative z-10">Potensi Dana Cair</p>
+                                <h2 class="text-3xl md:text-4xl font-black text-white relative z-10 truncate" id="sandbox-cair">Rp 0</h2>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border border-gray-100 card-shadow overflow-hidden">
+                            <div class="p-5 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+                                <h3 class="font-bold text-gray-800">Tabel Sandbox Parameter</h3>
+                                <button onclick="resetSandbox()" class="text-xs bg-white border border-gray-300 px-3 py-1.5 rounded hover:bg-gray-100 font-bold text-gray-600"><i class="fas fa-undo"></i> Reset ke Asli</button>
+                            </div>
+                            <div class="overflow-x-auto w-full">
+                                <table class="w-full text-sm text-left whitespace-nowrap">
+                                    <thead class="bg-gray-100 text-gray-600 font-bold uppercase text-[11px] tracking-wider">
+                                        <tr>
+                                            <th class="px-6 py-4">Kategori Master</th>
+                                            <th class="px-6 py-4 text-center bg-gray-50 border-r border-gray-200">Asumsi HPP</th>
+                                            <th class="px-6 py-4 text-center bg-blue-50 text-google-blue border-l border-blue-100">Target Qty</th>
+                                            <th class="px-6 py-4 text-center bg-blue-50 text-google-blue border-r border-blue-100">Set Harga HJP</th>
+                                            <th class="px-6 py-4 text-right">Potensi Omzet</th>
+                                            <th class="px-6 py-4 text-right">Potensi Profit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="sandbox-table-body" class="divide-y divide-gray-100"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ================= VIEW 4: INVENTORY ================= -->
+                    <div id="view-inventory" class="hidden animate-fade-in space-y-6">
+                        <div class="bg-blue-50 border border-blue-100 p-4 rounded-xl shadow-sm text-sm text-blue-900 font-medium">
+                            <i class="fas fa-lightbulb text-yellow-500 mr-2 text-lg"></i> <b>Tip Interaktif:</b> Klik pada salah satu kartu di bawah untuk memfilter.
+                        </div>
+
+                        <div id="inventory-summary" class="hidden grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div id="card-defisit" onclick="setInvFilter('defisit')" class="filter-card bg-white p-4 rounded-2xl border border-gray-200 border-b-4 border-b-google-red card-shadow flex flex-col justify-center cursor-pointer hover:bg-red-50/30">
+                                <div class="w-8 h-8 rounded-full bg-red-100 text-google-red flex items-center justify-center mb-2"><i class="fas fa-exclamation-triangle"></i></div>
+                                <h3 class="text-2xl font-black text-gray-800" id="inv-sum-defisit">0</h3>
+                                <p class="text-[10px] font-bold text-gray-500 uppercase mt-1">Defisit / Kurang</p>
+                            </div>
+                            <div id="card-aman" onclick="setInvFilter('aman')" class="filter-card bg-white p-4 rounded-2xl border border-gray-200 border-b-4 border-b-google-green card-shadow flex flex-col justify-center cursor-pointer hover:bg-green-50/30">
+                                <div class="w-8 h-8 rounded-full bg-green-100 text-google-green flex items-center justify-center mb-2"><i class="fas fa-shield-alt"></i></div>
+                                <h3 class="text-2xl font-black text-gray-800" id="inv-sum-aman">0</h3>
+                                <p class="text-[10px] font-bold text-gray-500 uppercase mt-1">Stok Aman</p>
+                            </div>
+                            <div id="card-overstock" onclick="setInvFilter('overstock')" class="filter-card bg-white p-4 rounded-2xl border border-gray-200 border-b-4 border-b-google-yellow card-shadow flex flex-col justify-center cursor-pointer hover:bg-yellow-50/30">
+                                <div class="w-8 h-8 rounded-full bg-yellow-100 text-google-yellow flex items-center justify-center mb-2"><i class="fas fa-box-open"></i></div>
+                                <h3 class="text-2xl font-black text-gray-800" id="inv-sum-overstock">0</h3>
+                                <p class="text-[10px] font-bold text-gray-500 uppercase mt-1">Overstock</p>
+                            </div>
+                            <div id="card-deadstock" onclick="setInvFilter('deadstock')" class="filter-card bg-white p-4 rounded-2xl border border-gray-200 border-b-4 border-b-gray-600 card-shadow flex flex-col justify-center cursor-pointer hover:bg-gray-100">
+                                <div class="w-8 h-8 rounded-full bg-gray-200 text-gray-600 flex items-center justify-center mb-2"><i class="fas fa-skull-crossbones"></i></div>
+                                <h3 class="text-2xl font-black text-gray-800" id="inv-sum-deadstock">0</h3>
+                                <p class="text-[10px] font-bold text-gray-500 uppercase mt-1">Deadstock</p>
+                            </div>
+                        </div>
+
+                        <div id="inventory-data-state" class="hidden bg-white rounded-2xl border border-gray-100 card-shadow overflow-hidden flex-col w-full">
+                            <div class="p-4 md:p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4 bg-gray-50/50">
+                                <div class="flex items-center gap-3">
+                                    <h3 class="font-bold text-gray-800 text-lg">Tabel Eksekusi Produk</h3>
+                                    <button id="btn-clear-filter" onclick="setInvFilter('all')" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-1 rounded text-xs font-bold transition"><i class="fas fa-times mr-1"></i> Reset</button>
+                                </div>
+                                <div class="relative w-full md:w-80">
+                                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                                    <input type="text" id="inv-text-search" placeholder="Cari SKU..." class="pl-10 text-sm border border-gray-300 rounded-lg px-4 py-2 w-full focus:outline-none focus:border-google-blue bg-white shadow-sm">
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto w-full max-h-[650px] overflow-y-auto relative">
+                                <table class="w-full text-sm text-left whitespace-nowrap">
+                                    <thead class="bg-gray-100 text-gray-600 font-bold uppercase text-[11px] tracking-wider sticky top-0 z-10 shadow-sm">
+                                        <tr>
+                                            <th class="px-6 py-4">SKU & Nama</th>
+                                            <th class="px-6 py-4 text-center">Stok Gudang</th>
+                                            <th class="px-6 py-4 text-center border-l border-r border-gray-200 bg-purple-50/30 text-purple-700">Forecast Butuh</th>
+                                            <th class="px-6 py-4 text-center">Selisih Real</th>
+                                            <th class="px-6 py-4 w-1/3">Status & Rekomendasi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="inventory-table-body" class="divide-y divide-gray-100"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div id="global-empty-state" class="bg-white p-12 rounded-2xl border border-gray-100 card-shadow text-center py-20">
+                            <i class="fas fa-database text-5xl text-gray-300 mb-4"></i>
+                            <h3 class="text-xl font-bold text-gray-700 mb-2">Data Stok Tidak Ditemukan</h3>
+                            <button onclick="openDataIntegration()" class="bg-google-blue text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-blue-600 transition">Buka Panel Kelola Data</button>
+                        </div>
+                    </div>
+
+                    <!-- ================= VIEW 5: RUNWAY ================= -->
+                    <div id="view-runway" class="hidden animate-fade-in space-y-6">
+                        <div class="bg-blue-50 border-l-4 border-google-blue p-5 rounded-r-xl shadow-sm">
+                            <h3 class="font-bold text-blue-900 text-lg mb-1"><i class="fas fa-hourglass-half mr-2"></i> Analisis Ketahanan Stok (Runway)</h3>
+                            <p class="text-sm text-blue-800">Sisa hari stok bertahan berdasarkan Kecepatan Terjual (Velocity).</p>
+                        </div>
+
+                        <div class="bg-white rounded-2xl border border-gray-100 card-shadow overflow-hidden">
+                            <div class="p-4 md:p-6 border-b border-gray-100 bg-gray-50/50 flex justify-between items-center">
+                                <h3 class="font-bold text-gray-800">Status Runway per SKU</h3>
+                            </div>
+                            <div class="overflow-x-auto max-h-[600px] overflow-y-auto relative">
+                                <table class="w-full text-sm text-left whitespace-nowrap">
+                                    <thead class="bg-gray-100 text-gray-600 font-bold uppercase text-[11px] tracking-wider sticky top-0 z-10 shadow-sm">
+                                        <tr>
+                                            <th class="px-6 py-4">SKU Produk</th>
+                                            <th class="px-6 py-4 text-center">Stok Saat Ini</th>
+                                            <th class="px-6 py-4 text-center bg-gray-50 border-l border-r border-gray-200">Avg Demand/Hari</th>
+                                            <th class="px-6 py-4 text-center text-google-blue">Sisa Umur (Hari)</th>
+                                            <th class="px-6 py-4">Status Level</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="runway-table-body" class="divide-y divide-gray-100"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- DATA INTEGRATION MODAL -->
+    <div id="data-modal" class="fixed inset-0 bg-gray-900/80 backdrop-blur-sm z-50 flex items-center justify-center overflow-y-auto p-4 md:p-0 hidden">
+        <div class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden animate-fade-in my-auto">
+            <div class="bg-gray-900 p-5 md:p-6 text-white flex justify-between items-center">
+                <div>
+                    <h2 class="text-xl font-bold tracking-tight"><i class="fas fa-database text-google-green mr-2"></i> Integrasi Data Base</h2>
+                    <p class="text-gray-400 text-xs mt-1">Sistem ini memproses data 100% secara lokal di browser Anda.</p>
+                </div>
+                <button onclick="closeDataIntegration()" class="text-gray-400 hover:text-white"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            
+            <div class="p-6 md:p-8 space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-google-blue transition cursor-pointer" onclick="document.getElementById('file-sales').click()">
+                        <i class="fas fa-chart-line text-4xl text-google-blue mb-3"></i>
+                        <h4 class="font-bold text-gray-800 text-sm">Data Penjualan</h4>
+                        <span id="badge-sales" class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-[10px] font-bold mt-1 inline-block truncate w-full">Belum Upload</span>
+                        <input type="file" id="file-sales" class="hidden" accept=".csv" multiple>
+                    </div>
+                    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-yellow-400 transition cursor-pointer" onclick="document.getElementById('file-inventory').click()">
+                        <i class="fas fa-boxes text-4xl text-google-yellow mb-3"></i>
+                        <h4 class="font-bold text-gray-800 text-sm">Stok Gudang Real</h4>
+                        <span id="badge-inventory" class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-[10px] font-bold mt-1 inline-block truncate w-full">Belum Upload</span>
+                        <input type="file" id="file-inventory" class="hidden" accept=".csv">
+                    </div>
+                    <div class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-purple-400 transition cursor-pointer" onclick="document.getElementById('file-forecast').click()">
+                        <i class="fas fa-search-dollar text-4xl text-purple-500 mb-3"></i>
+                        <h4 class="font-bold text-gray-800 text-sm">Prediksi Kebutuhan</h4>
+                        <span id="badge-forecast" class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-[10px] font-bold mt-1 inline-block truncate w-full">Belum Upload</span>
+                        <input type="file" id="file-forecast" class="hidden" accept=".csv">
+                    </div>
+                </div>
+
+                <div class="border-t border-gray-200 pt-6 mt-6">
+                    <h4 class="font-bold text-gray-800 text-sm mb-4"><i class="fas fa-cog text-gray-400 mr-1"></i> Fee Marketplace & RTS</h4>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <div class="bg-white border border-gray-200 p-3 rounded-lg"><label class="block text-[9px] font-bold text-gray-500 mb-1">SHOPEE FEE %</label><input type="number" id="setup-shopee-fee" value="32.5" class="w-full font-bold text-base outline-none"></div>
+                        <div class="bg-white border border-gray-200 p-3 rounded-lg"><label class="block text-[9px] font-bold text-gray-500 mb-1">TIKTOK/TKPD %</label><input type="number" id="setup-tiktok-fee" value="31.79" class="w-full font-bold text-base outline-none"></div>
+                        <div class="bg-blue-50 border border-blue-200 p-3 rounded-lg"><label class="block text-[9px] font-bold text-blue-800 mb-1">ADS %</label><input type="number" id="setup-ads" value="12.5" class="w-full font-bold text-base text-google-blue bg-transparent outline-none"></div>
+                        <div class="bg-white border border-gray-200 p-3 rounded-lg"><label class="block text-[9px] font-bold text-gray-500 mb-1">RTS SHOPEE %</label><input type="number" id="setup-shopee-rts" value="7" class="w-full font-bold text-base outline-none text-google-red"></div>
+                        <div class="bg-white border border-gray-200 p-3 rounded-lg"><label class="block text-[9px] font-bold text-gray-500 mb-1">RTS LAINNYA %</label><input type="number" id="setup-tiktok-rts" value="15" class="w-full font-bold text-base outline-none text-google-red"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-5 md:p-6 bg-gray-50 flex flex-col sm:flex-row justify-end gap-3 border-t border-gray-200">
+                <button onclick="useAllSampleData()" class="w-full sm:w-auto px-6 py-3 text-sm text-gray-700 bg-white border border-gray-300 rounded-xl hover:bg-gray-100 font-bold transition">Isi Data Demo</button>
+                <button onclick="saveAndCloseIntegration()" class="w-full sm:w-auto px-10 py-3 bg-gray-900 text-white rounded-xl hover:bg-black font-bold text-sm shadow-lg transition transform active:scale-95">Proses Analisis</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
