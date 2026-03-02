@@ -9,7 +9,13 @@ import { showToast, formatIDR } from './js/utils.js';
 // Setup Global Event Listeners
 document.addEventListener('DOMContentLoaded', () => {
     // UI Event Handlers
-    document.getElementById('sidebar-overlay').addEventListener('click', App.toggleSidebar);
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarClose = document.getElementById('sidebar-close');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+    if (sidebarToggle) sidebarToggle.addEventListener('click', App.toggleSidebar);
+    if (sidebarClose) sidebarClose.addEventListener('click', App.toggleSidebar);
+    if (sidebarOverlay) sidebarOverlay.addEventListener('click', App.toggleSidebar);
     
     // Sidebar Navigation
     document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -38,6 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const dataModal = document.getElementById('data-modal');
     window.openDataIntegration = () => dataModal.classList.remove('hidden');
     window.closeDataIntegration = () => dataModal.classList.add('hidden');
+    window.toggleSidebar = App.toggleSidebar;
+    window.switchView = App.switchView;
+    window.refreshAll = App.refreshAll;
+    window.calcSandbox = Simulators.calcSandbox;
 
     // File Uploads
     document.getElementById('file-sales').addEventListener('change', async (e) => {
